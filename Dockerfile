@@ -1,10 +1,10 @@
-FROM nginx
-MAINTAINER MarvAmBass
+FROM nginx:1.10
+MAINTAINER https://github.com/FelikZ
 
 ENV LANG C.UTF-8
 
 RUN apt-get update; apt-get install -y \
-    openssl
+    openssl net-tools less curl
 
 RUN rm -rf /etc/nginx/conf.d/*; \
     mkdir -p /etc/nginx/external
@@ -15,6 +15,7 @@ RUN sed -i 's/access_log.*/access_log \/dev\/stdout;/g' /etc/nginx/nginx.conf; \
 
 ADD basic.conf /etc/nginx/conf.d/basic.conf
 ADD ssl.conf /etc/nginx/conf.d/ssl.conf
+ADD default.conf /etc/nginx/conf.d/default.conf
 
 ADD entrypoint.sh /opt/entrypoint.sh
 RUN chmod a+x /opt/entrypoint.sh
